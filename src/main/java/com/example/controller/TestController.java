@@ -1,7 +1,10 @@
 package com.example.controller;
 
+import com.example.model.Article;
+import com.example.service.AritcleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,12 +16,16 @@ public class TestController {
     //添加一个日志器
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
+    @Autowired
+    private AritcleService aritcleService;
+
     //映射一个action
-    @RequestMapping("/index")
+    @RequestMapping("/test")
     public String index() {
-        //输出日志文件
-        logger.info("the first jsp pages");
-        //返回一个index.jsp这个视图
-        return "index";
+        Article article = new Article();
+        article.setId(1);
+        article.setName("测试");
+        aritcleService.save(article);
+        return "ok";
     }
 }
