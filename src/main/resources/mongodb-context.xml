@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-       xmlns:repository="http://www.springframework.org/schema/data/repository"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd
-http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository-1.5.xsd">
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/data/mongo
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.7.xsd
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-
-    <!-- 加载mongodb的配置属性文件 -->
-    <context:property-placeholder location="classpath:mongodb.properties" />
-
-    <mongo:mongo-client host="${mongo.host}" port="${mongo.port}"
-                        id="mongo">
-        <mongo:client-options write-concern="${mongo.writeconcern}"
-                              connect-timeout="${mongo.connectTimeout}" socket-keep-alive="${mongo.socketKeepAlive}" />
+    <!--credentials的配置形式是：用户名:密码@默认数据库-->
+    <mongo:mongo-client id="mongoClient" host="121.42.199.81" port="27017" credentials="hotel:hotel123@hotel_dev">
+        <mongo:client-options  write-concern="SAFE"/>
     </mongo:mongo-client>
 
-
-    <!-- mongo:db-factory dbname="database" mongo-ref="mongo" / -->
-    <mongo:db-factory id="mongoDbFactory" dbname="mongoTest"
-                      mongo-ref="mongo" />
-
+    <mongo:db-factory id="mongoDbFactory" dbname="hotel_dev"  mongo-ref="mongoClient" />
 
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
     </bean>
-
 </beans>

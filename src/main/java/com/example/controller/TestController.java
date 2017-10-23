@@ -23,7 +23,7 @@ public class TestController {
     @RequestMapping("/test")
     public String index() {
         Article article = new Article();
-        article.setId(1);
+        article.setId(2);
         article.setName("测试");
         aritcleService.save(article);
         return "ok";
